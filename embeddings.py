@@ -42,13 +42,13 @@ def _annon_enum_rec(pasos_restantes, mapeo, camino=[], vs_en_camino=0, admite_bu
             continue
         camino.append(i)
         vs_en_este_camino = vs_en_camino + (1 if i == nuevo else 0)
-        _annon_enum_rec(pasos_restantes - 1, mapeo, camino, vs_en_este_camino)
+        _annon_enum_rec(pasos_restantes - 1, mapeo, camino, vs_en_este_camino, admite_bucles)
         camino.pop()
 
 
-def _enumerar_anonymous_walks(length):
+def _enumerar_anonymous_walks(length, admite_bucles=False):
     mapeo = {}
-    _annon_enum_rec(length, mapeo)
+    _annon_enum_rec(length, mapeo, admite_bucles=admite_bucles)
     return mapeo
 
 
@@ -71,14 +71,14 @@ def _anonymize_walk(camino):
     return camino_trans
 
 
-def anoymous_walks(grafo, length):
+def anoymous_walks(grafo, length, admite_bucles=False):
     '''
     :param grafo: Grafo a calcularle el embedding por anonymous_walk
     :param length:
     :return:
     '''
     cantidad = _cant_annonymous_walks(length)
-    mapeo = _enumerar_anonymous_walks(length)
+    mapeo = _enumerar_anonymous_walks(length, admite_bucles)
     contadores = [0] * len(mapeo)
     for i in range(cantidad):
         camino = _random_walk(grafo, length)
